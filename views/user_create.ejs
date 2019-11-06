@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>signUp</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+
+<script>
+    function validate(){
+        var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        var passwordCheck = /^[a-zA-Z0-9]{8,12}$/;
+        
+        var userName = document.getElementById("userName");
+        var email = document.getElementById("email");
+        var pw1 = document.getElementById("pw1");
+        var pw2 = document.getElementById("pw2");
+
+        if(userName.value == ""){
+            
+            alert("이름을 입력해주세요");
+            return false;
+        }
+
+        if(email.value == "") {
+            
+            alert("이메일을 입력해주세요");
+            return false
+        }
+
+        if(pw1.value == "") {
+
+            alert("비밀번호를 입력해주세요");
+            return false;
+        }
+
+        if(pw1.value != pw2.value) {
+            
+            alert("비밀번호가 일치하지 않습니다")
+            return false;
+        }
+
+        if(!emailCheck.test(email.value)){
+
+            alert("이메일 형식에 맞지 않습니다")
+            return false;
+
+        }
+
+        if(!passwordCheck.test(pw1.value)){
+            alert("비밀번호 형식에 맞지 않습니다");
+            return false;
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/create',
+            data: {
+                'name': $('#userName').val(),
+                'email': $('#email').val(),
+                'pwd': $('#pw1').val()
+            },
+
+            success : function(result) {
+                location.href = "/"
+            },
+            error : function() {
+                alert('fail');
+            }
+
+        });
+ 
+
+}
+
+
+</script>
+
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+                <!-- 회원가입 양식 post 방식 form -->
+					<span class="login100-form-title p-b-26" style="font-weight: bold;">
+						회원가입
+                    </span>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+					
+                            <input class="input100" id="userName" type="text" name="userName">
+                            <span class="focus-input100" data-placeholder="이름"></span>
+                    </div>
+					
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is: a@b.c">       
+						<input class="input100" id="email" type="text" name="email">
+                        <span class="focus-input100" data-placeholder="이메일"></span> 
+                    </div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+					
+						<input class="input100" id="pw1" type="password" name="pass">
+						<span class="focus-input100" data-placeholder="비밀번호(8~12자리 영문,숫자로 입력)"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+					
+                            <input class="input100" id="pw2" type="password" name="pass2">
+                            <span class="focus-input100" data-placeholder="비밀번호 확인"></span>
+                    </div>
+
+                    <p id=pwCheck>비밀번호 중복입니다 나올 위치</p>
+                    <!-- 회원가입 버튼 -->
+				    <div class="wrap-signUp100-form-btn">
+                        <div class="signUp100-form-bgbtn"></div>
+                        
+                        <button class="signUp100-form-btn" onclick="validate()">
+                            회원가입
+                        </button>
+                    </div>
+                    <br>
+                    		
+                
+                <div class="wrap-signUp100-form-btn">
+                    <div class="signUp100-form-bgbtn"></div>
+                    
+                    <button class="signUp100-form-btn" onclick="location.href='/'">
+                        이전
+                    </button>
+                </div>
+
+				<div class="text-center p-t-115">
+					<span class="txt1" style="font-weight: bold;">
+						Recycling System for Everyone
+					</span>
+					<br>
+                </div>
+                
+
+            </div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+</body>
+</html>
