@@ -7,11 +7,13 @@ router.get('/', ctrl.index);
 router.get('/user_info', ctrl.user_info);
 router.get('/use_coin', ctrl.use_coin);
 router.get('/create_account',ctrl.create_form);
+router.get('/machine',ctrl.get_machine);
 
 
 //POST 메소드 작성
 router.post('/create', ctrl.create);
 router.post('/login', ctrl.login);
 router.post('/emailCheck',ctrl.emailCheck);
+router.post('/process',ctrl.emailCheck);
 
 module.exports = router;

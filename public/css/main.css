@@ -93,6 +93,22 @@ input {
 	border: none;
 }
 
+.rectangle{
+
+  box-sizing: border-box;
+  width: 400px;
+  height: 200px;
+  margin: 20px auto;
+  
+}
+
+.walletAddress {
+  font-size: 14px;
+  width: 100%;
+  height: 30px;
+  background-color: gainsboro;
+}
+
 textarea {
   outline: none;
   border: none;

@@ -13,34 +13,38 @@ connection.connect();
 var Web3 = require("web3");
 var web3 = new Web3();
 web3.setProvider(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
-var proofContract = "0x43f3c8e1cda12e1c29db90c66f7f68e4eb9cf3d1";
+var proofContract = "0xdd75bbec385b4e5507214c83e7b7e3a427baeca5";
 var proofAbi = [
 	{
 		"constant": false,
 		"inputs": [
 			{
-				"name": "add_user",
+				"name": "_transfer",
 				"type": "address"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
 			}
 		],
-		"name": "add_admin",
+		"name": "transferpay",
 		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
+		"payable": true,
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
+		"constant": true,
+		"inputs": [],
+		"name": "name",
+		"outputs": [
 			{
-				"name": "_add_trash",
-				"type": "address"
+				"name": "",
+				"type": "string"
 			}
 		],
-		"name": "add_trash",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -70,15 +74,47 @@ var proofAbi = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "spender",
+				"name": "add_user",
 				"type": "address"
-			},
+			}
+		],
+		"name": "add_admin",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
 			{
-				"name": "subtractedValue",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "decreaseAllowance",
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"name": "recipient",
+				"type": "address"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
 		"outputs": [
 			{
 				"name": "",
@@ -87,6 +123,20 @@ var proofAbi = [
 		],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -131,6 +181,109 @@ var proofAbi = [
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "admin",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "payback",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_add_trash",
+				"type": "address"
+			}
+		],
+		"name": "add_trash",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"name": "subtractedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "decreaseAllowance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -154,22 +307,37 @@ var proofAbi = [
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
 			{
-				"name": "sender",
+				"name": "owner",
 				"type": "address"
 			},
 			{
-				"name": "recipient",
+				"name": "spender",
 				"type": "address"
-			},
+			}
+		],
+		"name": "allowance",
+		"outputs": [
 			{
-				"name": "amount",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "transferFrom",
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "trash",
 		"outputs": [
 			{
 				"name": "",
@@ -177,25 +345,7 @@ var proofAbi = [
 			}
 		],
 		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_transfer",
-				"type": "address"
-			},
-			{
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "transferpay",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -247,156 +397,6 @@ var proofAbi = [
 		],
 		"name": "Approval",
 		"type": "event"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "admin",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"name": "spender",
-				"type": "address"
-			}
-		],
-		"name": "allowance",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "account",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "decimals",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "name",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "payback",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "symbol",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "trash",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
 	}
 ]
 var contract = new web3.eth.Contract(proofAbi,proofContract);
@@ -414,9 +414,14 @@ module.exports.index = function(req, res){
 };
 
 //사용자 정보 컨트롤러
-module.exports.user_info = function(req, res){
-	console.log(req.query.key);
-    res.render('user_info', { title : 'Location info' });
+module.exports.user_info = async function(req, res){
+	var key = req.query.key;
+	let result = await web3.eth.getBalance(key);
+	result = web3.utils.fromWei(result,"ether");
+
+    res.render('user_info', { 
+		key : key,
+		balance : result });
 };
 
 //코인사용하는 컨트롤러
@@ -429,6 +434,11 @@ module.exports.use_coin = function(req, res){
 //회원가입 하는 폼 가져오는 컨트롤러
 module.exports.create_form = function(req, res){
     res.render('user_create', { title : 'Add review' });
+};
+
+//자판기
+module.exports.get_machine = function(req, res){
+    res.render('machine', { title : 'Add review' });
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -564,3 +574,14 @@ module.exports.login = function(req, res, next){
 	}catch(err){
 	}
 };
+
+//자판기에서 qr코드 읽었을때 처리하는 로직
+module.exports.meachine = async function(req, res, next) {
+	var trash = '0x5dcebb61d0a7b41c2e2fad508be91927d540feaa';
+	var account = req.body.account;
+	
+	var send_transction = await contract.methods.mint(account,trash).call();
+
+	res.send("complete");
+
+}

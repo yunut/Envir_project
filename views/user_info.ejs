@@ -8,7 +8,33 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>My wallet</title>
+<!--===============================================================================================-->   
+   <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+   <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+   <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+   <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+   <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->   
+   <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+   <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+   <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->   
+   <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+   <link rel="stylesheet" type="text/css" href="css/util.css">
+   <link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+<script type="text/javascript" src="/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/qrcode.js"></script>
+
+<title>My wallet</title>
+
 
   <!-- Bootstrap core CSS -->
   <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -16,13 +42,7 @@
   <!-- Custom styles for this template -->
   <!--<link href="/css/heroic-features.css" rel="stylesheet">-->
   <link rel="icon" type="image/png" href="/images/mark2.jpg" /> 
-  <script>
-              
-      function createWallet() {
-        document.getElementById("walletAddress").value = "0x00192010eage";
-      }
 
-    </script>
 </head>
 
 <body>
@@ -55,41 +75,63 @@
     </div>
   </nav>
 
-  <!-- Page Content -->
-  <div class="container">
 
-    <!-- Jumbotron Header -->
-    <!-- <header class="jumbotron my-4">
-      <h1 class="display-3">A Warm Welcome!</h1>
-      <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>
-      <a href="#" class="btn btn-primary btn-lg">Call to action!</a>
-    </header> -->
+  <div class="limiter">
+      <div class="container-login100">
+         <div class="wrap-login100">
+            
+               <span class="login100-form-title p-b-26">
+                  My Wallet
+          </span>
+          
+          <!-- <div style="border: 2px solid #000;width:250px">  -->
+    
+            <div id="qrcode"></div>
+    
+          <!-- </div> -->
 
-    <!-- Page Features -->
-    <div class="row text-center">
+          
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="http://files.itworld.co.kr/archive/image/2016/10/qr-code-give-me-up-100725354-medium.jpg" alt="">
-          <div class="card-body">
-            <button class="card-title" onclick="createWallet()">지갑 주소</button>
-            <input class="card-text" id="walletAddress" disabled>
+        <br>
+        <div class="row text-center">
 
-
+          <br>
+          <div class="rectangle">
+            <h4>잔액</h4>
+            <p class="walletAddress" type="text" id="balance"><%= balance %></p>
           </div>
-              <div class="form-group" >
-                <div class="input-group">
-                  <div class="input-group-addon">잔액확인</div>
-                  <input type="text" class="form-control" id="exampleInputAmount" value="남은잔액" disabled>
-                </div>
-              </div>
-
+          <br>
+        
         </div>
+          
+               <span class="txt1" style="font-weight: bold; margin-left: 45px;">
+                  Recycling System for Everyone
+          </span>
+          
+               <br>
+            </div>
+         </div>
       </div>
-  </div>
+   </div>
+
+   <script type="text/javascript">
+
+    var qrcode = new QRCode(document.getElementById("qrcode"),{
+        text: "<%= key %>",
+        width: 250,
+        height: 250,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+
+    $('#qrcode > img').css({"margin":"auto"});
+</script> 
 
   <script src="/vendor/jquery/jquery.min.js"></script>
   <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  
+ 
 
 </body>
 
