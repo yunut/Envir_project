@@ -221,6 +221,13 @@ iframe {
   margin-bottom: 37px;
 }
 
+.wrap-input {
+  width: 100%;
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin-bottom: 10px;
+}
+
 .input100 {
   font-family: Poppins-Regular;
   font-size: 15px;
@@ -231,7 +238,7 @@ iframe {
   width: 100%;
   height: 45px;
   background: transparent;
-  padding: 0 5px;
+  padding: 0 2px;
 }
 
 /*---------------------------------------------*/ 
@@ -300,6 +307,12 @@ iframe {
 
 .has-val.input100 + .focus-input100::before {
   width: 100%;
+}
+
+.emailCheck{
+  width: 30%;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 /*---------------------------------------------*/
@@ -456,6 +469,21 @@ iframe {
   padding: 0 20px;
   width: 100%;
   height: 50px;
+}
+
+
+.email-check-btn{
+  margin-top: 0;
+  font-family: Poppins-Medium;
+  font-size:12px;
+  font-weight: bold;
+  line-height: 2;
+  background-color: darkgray;
+  color: #fff;
+  
+  padding: 0 20 0 20px;
+  width: 100%;
+  height: 30px;
 }
 
 /*------------------------------------------------------------------

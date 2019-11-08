@@ -424,7 +424,6 @@ module.exports.use_coin = function(req, res){
 };
 
 
-
 //건드릴거없음
 //회원가입 하는 폼 가져오는 컨트롤러
 module.exports.create_form = function(req, res){
@@ -434,40 +433,106 @@ module.exports.create_form = function(req, res){
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+//이메일 중복확인 체크
+
+module.exports.emailCheck = function(req,res,next){
+ 
+    var email = req.body.email;
+
+    let query = `select EMAIL from block_table where EMAIL = '${email}';`;
+    
+    try{
+
+        new Promise((resolve, reject) => {
+            connection.query(query, function(err, result, fields) {
+                
+                let check="0";
+
+                if(err){
+                    console.log(err);
+                   
+                    // return reject(err);
+
+                }else{ //없는 경우는 [] 값으로 들어감
+                    if(result.length==0) {
+                        return resolve("0");
+                    }else{
+
+                        console.log(result[0].EMAIL); //이메일 자체 string값 나옴
+                        var emailCnt = result[0].EMAIL.length;
+            
+                        // console.log("이메일 길이: " + emailCnt);
+            
+                        if(emailCnt != 0){ //이메일 길이가 0이 아니면
+                            check="1";
+                            return resolve(check); //이메일 중복
+            
+                        }else{
+                            
+                            return resolve(check); //이메일 중복이 아닐 경우
+                            
+                        }
+                    
+                    }
+                }
+        
+            });
+        }).then(function(result){
+            console.log(result);
+            res.json({ //보낼때 status 사용해야되기 때문에 json 형태로 전송
+                status: 200,
+                response: result
+            });                
+        });
+
+    }catch(err){
+        console.log(err);
+    }
+}
+
 //회원가입 컨트롤러
 //사용자가 입력한 EMAIL DB와 비교해서 없으면 생성, 있으면 있다고 반환
 module.exports.create = async function(req, res, next){
     var name = req.body.name;
     var email = req.body.email;
     var pwd = req.body.pwd;
+    var emailConfirm = req.body.emailConfirm;
 
+    if(emailConfirm == 1){ //중복확인 했을 경우만 계정생성
 
-    var newAccount = await web3.eth.personal.newAccount(pwd,function(err,result) {
-            console.log("계정생성 중");
-            
-    });
+        var newAccount = await web3.eth.personal.newAccount(pwd,function(err,result) {
+                console.log("계정생성 중");
+                
+        });
 
-    let str_query =`INSERT INTO block_table(EMAIL, NAME, PASSWORD,ACCOUNT) VALUES('${email}','${name}','${pwd}','${newAccount}');`;
-    connection.query(str_query,function(err, result, fields) {
-        if(err) {
-            console.log(err);
-        } else {
-            console.log(result);
-        }
         
-    });
+        let str_query =`INSERT INTO block_table(EMAIL, NAME, PASSWORD,ACCOUNT) VALUES('${email}','${name}','${pwd}','${newAccount}');`;
+        connection.query(str_query,function(err, result, fields) {
+            if(err) {
+                console.log(err);
+            } else {
+                console.log(result);
+            }
+            
+        });
 
-    res.send({"result":"ppp"});
-    
+        res.send({"result":"confirm"});
+
+    }else{
+
+        res.send({"result":"reject"});
+    }
 };
 
-module.exports.login = async function(req, res, next){
+
+//로그인 컨트롤러
+module.exports.login = function(req, res, next){
     var email = req.body.email;
     var pwd = req.body.pwd;
     var frag = false;
 
     let str_query = `SELECT EMAIL,PASSWORD FROM block_table WHERE EMAIL='${email}';`;
-    await connection.query(str_query, function(err, rows, fields) {
+    connection.query(str_query, function(err, rows, fields) {
         if(err) {
             console.log(err);
         } else {

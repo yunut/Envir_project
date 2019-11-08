@@ -12,5 +12,6 @@ router.get('/create_account',ctrl.create_form);
 //POST 메소드 작성
 router.post('/create', ctrl.create);
 router.post('/login', ctrl.login);
+router.post('/emailCheck',ctrl.emailCheck);
 
 module.exports = router;
