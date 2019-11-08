@@ -14,6 +14,6 @@ router.get('/machine',ctrl.get_machine);
 router.post('/create', ctrl.create);
 router.post('/login', ctrl.login);
 router.post('/emailCheck',ctrl.emailCheck);
-router.post('/process',ctrl.emailCheck);
+router.post('/process',ctrl.machine);
 
 module.exports = router;

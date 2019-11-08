@@ -576,7 +576,7 @@ module.exports.login = function(req, res, next){
 };
 
 //자판기에서 qr코드 읽었을때 처리하는 로직
-module.exports.meachine = async function(req, res, next) {
+module.exports.machine = async function(req, res, next) {
 	var trash = '0x5dcebb61d0a7b41c2e2fad508be91927d540feaa';
 	var account = req.body.account;
 	
