@@ -28,6 +28,7 @@
 <!--===============================================================================================-->
 </head>
 <script>
+	/*
   function login() {
     $.ajax({
             type: 'post',
@@ -38,12 +39,45 @@
             },
 
             success : function(result) {
-                if(result) {
-                  location.href = "/user_info";
-                } else {
-                  alert(result);
-                  alert("비밀번호가 다르거나 이메일이 등록되어있지 않습니다");
-                }
+
+				if(result.response == "1"){
+					console.log("?")
+					location.href = "/user_info";
+            	}else if(result.response == "0"){
+					alert("비밀번호가 다르거나 이메일이 등록되어있지 않습니다");
+					return false;
+            	}
+            },
+            error : function() {
+                alert('fail');
+            }
+
+        });
+  }
+  */
+  function login() {
+	  
+	  let _email = document.getElementById("email").value;
+	  let _pwd = document.getElementById("pwd").value;
+	  document.getElementById("email").value="";
+	  document.getElementById("pwd").value="";
+    $.ajax({
+            type: 'post',
+            url: '/login',
+            data: {
+                'email': _email,
+                'pwd': _pwd
+            },
+
+            success : function(result) {
+
+				if(result.response == "1"){
+					location.href = "/user_info";
+            	}else if(result.response == "0"){
+					alert("비밀번호가 다르거나 이메일이 등록되어있지 않습니다");
+					return false;
+				}
+
             },
             error : function() {
                 alert('fail');
@@ -58,7 +92,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
+				<form class="login100-form validate-form" method="POST" onsubmit="login()">
 					<span class="login100-form-title p-b-26">
 						Welcome
 					</span>
@@ -83,10 +117,11 @@
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
-							<button class="login100-form-btn" onclick="login()">
+							<button type="submit" class="login100-form-btn">
 								로그인
 								
 							</button>
+
 						</div>
 					</div>
 					<br>

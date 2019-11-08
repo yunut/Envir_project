@@ -408,9 +408,9 @@ console.log(web3.version);
 
 //메인화면(로그인) 컨트롤러
 module.exports.index = function(req, res){
-
-
-    res.render('index', { title : 'Add review' });
+    res.render('index', { 
+		title : 'Add review'
+	});
 };
 
 //사용자 정보 컨트롤러
@@ -478,7 +478,6 @@ module.exports.emailCheck = function(req,res,next){
         
             });
         }).then(function(result){
-            console.log(result);
             res.json({ //보낼때 status 사용해야되기 때문에 json 형태로 전송
                 status: 200,
                 response: result
@@ -497,6 +496,8 @@ module.exports.create = async function(req, res, next){
     var email = req.body.email;
     var pwd = req.body.pwd;
     var emailConfirm = req.body.emailConfirm;
+	console.log(emailConfirm);
+
 
     if(emailConfirm == 1){ //중복확인 했을 경우만 계정생성
 
@@ -516,12 +517,13 @@ module.exports.create = async function(req, res, next){
             
         });
 
-        res.send({"result":"confirm"});
+        res.send("confirm");
 
     }else{
 
-        res.send({"result":"reject"});
+        res.send("reject");
     }
+	
 };
 
 
@@ -529,21 +531,35 @@ module.exports.create = async function(req, res, next){
 module.exports.login = function(req, res, next){
     var email = req.body.email;
     var pwd = req.body.pwd;
-    var frag = false;
 
-    let str_query = `SELECT EMAIL,PASSWORD FROM block_table WHERE EMAIL='${email}';`;
-    connection.query(str_query, function(err, rows, fields) {
-        if(err) {
-            console.log(err);
-        } else {
-            if(pwd == rows[0].PASSWORD) {
-                
-                frag = true;
-                console.log(frag);
-            }
-        }
-        
-    })
-    console.log(frag);
-    res.send(frag);
+
+	let query = `SELECT EMAIL,PASSWORD FROM block_table WHERE EMAIL='${email}';`;
+
+	try{
+		new Promise((resolve, reject) => {
+			connection.query(query, function(err, rows, fields) {
+				
+				if(err){
+					console.log(err);
+				
+		
+
+				}else if (rows.length > 0) { 
+					if(pwd == rows[0].PASSWORD) {
+						return resolve("1");
+					}else{
+						return resolve("0");
+					}
+				}
+		
+			});
+		}).then(function(result){
+			res.json({ //보낼때 status 사용해야되기 때문에 json 형태로 전송
+				status: 200,
+				response: result
+			});                
+		});
+
+	}catch(err){
+	}
 };

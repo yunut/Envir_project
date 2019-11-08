@@ -29,8 +29,10 @@
 
 <script>
     //회원가입 예외처리용
+    var emailck = 0;
+
     function validate(){
-        var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        var emailCheck = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/ ;
         var passwordCheck = /^[a-zA-Z0-9]{8,12}$/;
         
         var userName = document.getElementById("userName");
@@ -38,7 +40,7 @@
         var pw1 = document.getElementById("pw1");
         var pw2 = document.getElementById("pw2");
 
-        var emailConfirm = 0; //이메일 중복확인 하면 1로 변하게 만드는 용도, 중복확인 안하면 가입 안됨
+        
 
         if(userName.value == ""){
             
@@ -83,14 +85,15 @@
                 'name': $('#userName').val(),
                 'email': $('#email').val(),
                 'pwd': $('#pw1').val(),
-                'emailConfirm' : emailConfirm
+                'emailConfirm' : emailck
             },
 
             success : function(result) {
                 if(result == "confirm"){
-                    location.href = "/index.ejs"
+                    emailck = 0;
+                    location.href = "/"
                 }else if(result == "reject"){
-                    alert("회원가입 실패")
+                    alert("중복확인을 해주세요");
                 }
             },
             error : function() {
@@ -102,8 +105,16 @@
 }
 
 function emailCheck(){
- //이메일 중복체크용
- $.ajax({
+    var emailCheck =  /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/ ;
+    var email = document.getElementById("email");
+    if(!emailCheck.test(email.value)){
+
+    alert("이메일 형식에 맞지 않습니다 이메일형식은 aaa@aaa.com(3글자)입니다.")
+    return false;
+
+    }
+    //이메일 중복체크용
+    $.ajax({
         type: 'post',
         url: '/emailCheck',
         data:{
@@ -114,11 +125,13 @@ function emailCheck(){
             // console.log(result);
             // console.log(typeof result.response);
             
+
+
             if(result.response == "1"){
                 alert("이메일 중복입니다. 다른 이메일을 사용해주세요");
             }else if(result.response == "0"){
                 alert("사용 가능한 이메일 입니다");
-                emailConfirm = 1; //사용 가능일 경우, 1로 변경
+                emailck = 1; //사용 가능일 경우, 1로 변경
             }
             
         },
@@ -147,10 +160,10 @@ function emailCheck(){
                             <span class="focus-input100" data-placeholder="이름"></span>
                     </div>
 					
-					<div class="wrap-input validate-input" data-validate = "Valid email is: abc@abc.abc">       
-						<input class="input100" id="email" type="text" name="email">
-                        <span class="focus-input100" data-placeholder="이메일"></span> 
-                    </div>
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is: a@b.c">
+						<input class="input100" type="text" name="email" id="email">
+						<span class="focus-input100" data-placeholder="이메일"></span>
+					</div>
 
                     <div class="emailCheck validate-input">       
                         <button class="email-check-btn" onclick="emailCheck()">중복확인</button>
