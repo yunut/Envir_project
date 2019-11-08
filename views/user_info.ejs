@@ -1,11 +1,96 @@
-<html>
-  <head>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src='http://code.jquery.com/jquery-latest.js'></script>
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>My wallet</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <!--<link href="/css/heroic-features.css" rel="stylesheet">-->
+  <link rel="icon" type="image/png" href="/images/mark2.jpg" /> 
+  <script>
+              
+      function createWallet() {
+        document.getElementById("walletAddress").value = "0x00192010eage";
+      }
+
     </script>
-  </body>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">My Wallet</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">내 지갑
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">토큰 받기</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">토큰 사용하기</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <!-- Jumbotron Header -->
+    <!-- <header class="jumbotron my-4">
+      <h1 class="display-3">A Warm Welcome!</h1>
+      <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>
+      <a href="#" class="btn btn-primary btn-lg">Call to action!</a>
+    </header> -->
+
+    <!-- Page Features -->
+    <div class="row text-center">
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="http://files.itworld.co.kr/archive/image/2016/10/qr-code-give-me-up-100725354-medium.jpg" alt="">
+          <div class="card-body">
+            <button class="card-title" onclick="createWallet()">지갑 주소</button>
+            <input class="card-text" id="walletAddress" disabled>
+
+
+          </div>
+              <div class="form-group" >
+                <div class="input-group">
+                  <div class="input-group-addon">잔액확인</div>
+                  <input type="text" class="form-control" id="exampleInputAmount" value="남은잔액" disabled>
+                </div>
+              </div>
+
+        </div>
+      </div>
+  </div>
+
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
 </html>

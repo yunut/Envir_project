@@ -415,6 +415,7 @@ module.exports.index = function(req, res){
 
 //사용자 정보 컨트롤러
 module.exports.user_info = function(req, res){
+	console.log(req.query.key);
     res.render('user_info', { title : 'Location info' });
 };
 
@@ -533,7 +534,7 @@ module.exports.login = function(req, res, next){
     var pwd = req.body.pwd;
 
 
-	let query = `SELECT EMAIL,PASSWORD FROM block_table WHERE EMAIL='${email}';`;
+	let query = `SELECT EMAIL,PASSWORD,ACCOUNT FROM block_table WHERE EMAIL='${email}';`;
 
 	try{
 		new Promise((resolve, reject) => {
@@ -546,7 +547,7 @@ module.exports.login = function(req, res, next){
 
 				}else if (rows.length > 0) { 
 					if(pwd == rows[0].PASSWORD) {
-						return resolve("1");
+						return resolve(rows[0].ACCOUNT);
 					}else{
 						return resolve("0");
 					}
