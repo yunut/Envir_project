@@ -586,8 +586,9 @@ module.exports.login = function(req, res, next){
 module.exports.machine = async function(req, res, next) {
 	var trash = '0x5dcebb61d0a7b41c2e2fad508be91927d540feaa';
 	var account = req.body.account;
+	var num = req.query.num;
 	
-	var send_transction = await contract.methods.mint(account,trash).call();
+	var send_transction = await contract.methods.mint(account,num).send({from: trash});
 
 	res.send("complete");
 
