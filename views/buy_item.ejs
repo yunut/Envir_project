@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>물품구입</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/vendor/simple-line-icons/css/simple-line-icons.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../public/img/mark2.jpg" />
+
+  <!-- Plugin CSS -->
+  <link rel="stylesheet" href="/device-mockups/device-mockups.min.css">
+
+  <!-- Custom styles for this template -->
+  <link href="/css/new-age.min.css" rel="stylesheet">
+  <style>
+  <!-- body{font-size:9pt;} -->
+  <!-- #panel{width:500px;height:1000px; position:absolute; margin:0 auto; top:0px;} -->
+  <!-- #ball{position: absolute;left:300px; top:400px; width:60px; height:60px; border-radius:60px; background-color:pink; background-image:url("../public/img/bitcoin.jpg");}/* img{width:70px; height:70px;} */ -->
+  <!-- #nav{text-align: left; width:1000px; margin:0 auto;} -->
+  #plus1{background-image:url("/img/plus4.png"); background-color:transparent;position: absolute; width:45px; height:45px; border-radius:45px; border:0 solid; }
+  #minus1{background-image:url("/img/minus.png"); background-color:transparent;position: relative; width:45px; height:45px; border-radius:45px; border:0 solid;  }
+  #plus2{background-image:url("/img/plus4.png"); background-color:transparent;position: absolute; width:45px; height:45px; border-radius:45px; border:0 solid; }
+  #minus2{background-image:url("/img/minus.png"); background-color:transparent;position: relative; width:45px; height:45px; border-radius:45px; border:0 solid;  }
+  #plus3{background-image:url("/img/plus4.png"); background-color:transparent;position: absolute; width:45px; height:45px; border-radius:45px; border:0 solid; }
+  #minus3{background-image:url("/img/minus.png"); background-color:transparent;position: relative; width:45px; height:45px; border-radius:45px; border:0 solid;  }
+  </style>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script>
+
+function button_event(){
+
+if (confirm("정말 종료하시겠습니까?") == true){    //확인
+
+    history.go(-1);
+
+}else{   //취소
+
+    return;
+
+}
+
+}
+
+    $(document).ready(function(){
+      var timer; // setIntetval
+      var s_timer; // setTimeout
+
+// + 버튼 클릭시 input의 value 값 감소
+      $('#plus1').on('mousedown', function(event){
+        cal1('_ipbx1',1); // input의 value가 300보다 작으면 1증가.
+        s_timer = setTimeout(function() { // 0.5초 이후 실행
+          timer = setInterval(function() { // 0.1초마다 cal()함수 반복
+            cal1('_ipbx1',1);
+          },100);
+        },500);
+      });
+
+// - 버튼 클릭시 input의 value 값 감소
+      $('#minus1').on('mousedown', function(event){
+        cal1('_ipbx1',2); // input의 value가 100보다 크면 1감소.
+        s_timer = setTimeout(function() { // 0.5초 이후 실행
+          timer = setInterval(function() { // 0.1초마다 cal()함수 반복
+            cal1('_ipbx1',2);
+          },100);
+        },500);
+      });
+
+
+      // + 버튼 클릭시 input의 value 값 감소
+      $('#plus2').on('mousedown', function(event){
+        cal2('_ipbx2',1); // input의 value가 300보다 작으면 1증가.
+        s_timer = setTimeout(function() { // 0.5초 이후 실행
+          timer = setInterval(function() { // 0.1초마다 cal()함수 반복
+            cal2('_ipbx2',1);
+          },100);
+        },500);
+      });
+
+// - 버튼 클릭시 input의 value 값 감소
+      $('#minus2').on('mousedown', function(event){
+        cal2('_ipbx2',2); // input의 value가 100보다 크면 1감소.
+        s_timer = setTimeout(function() { // 0.5초 이후 실행
+          timer = setInterval(function() { // 0.1초마다 cal()함수 반복
+            cal2('_ipbx2',2);
+          },100);
+        },500);
+      });
+
+
+      // + 버튼 클릭시 input의 value 값 감소
+      $('#plus3').on('mousedown', function(event){
+        cal3('_ipbx3',1); // input의 value가 300보다 작으면 1증가.
+        s_timer = setTimeout(function() { // 0.5초 이후 실행
+          timer = setInterval(function() { // 0.1초마다 cal()함수 반복
+            cal3('_ipbx3',1);
+          },100);
+        },500);
+      });
+
+// - 버튼 클릭시 input의 value 값 감소
+      $('#minus3').on('mousedown', function(event){
+        cal3('_ipbx3',2); // input의 value가 100보다 크면 1감소.
+        s_timer = setTimeout(function() { // 0.5초 이후 실행
+          timer = setInterval(function() { // 0.1초마다 cal()함수 반복
+            cal3('_ipbx3',2);
+          },100);
+        },500);
+      });
+
+// 마우스를 떼면 타이머 관련 함수들 클리어
+      $(document).on('mouseup', function(event){
+        clearInterval(timer); 
+        clearTimeout(s_timer);
+      });	
+
+
+// input의 value값을 더하거나 빼는 함수
+    function cal1(n_id, n_math) { // 첫번째 인자 ID, 두번쨰 인자 덧셈or뺄셈
+      switch(n_math) {
+      case 1 : // 덧셈
+      if(document.getElementById('_ipbx1').value < 20) {
+        document.getElementById('_ipbx1').value++;
+        var test = document.getElementById('_ipbx4');
+        test.value = parseInt(test.value)+2;
+      }
+      break;
+    case 2 :  // 뺄셈
+      if(document.getElementById('_ipbx1').value > 0) {
+        document.getElementById('_ipbx1').value--;
+        var test = document.getElementById('_ipbx4');
+        test.value = parseInt(test.value)-2;
+      }
+      break;
+    default : break;
+    }
+    return false;
+    }
+
+    // input의 value값을 더하거나 빼는 함수
+    function cal2(n_id, n_math) { // 첫번째 인자 ID, 두번쨰 인자 덧셈or뺄셈
+      switch(n_math) {
+      case 1 : // 덧셈
+      if(document.getElementById('_ipbx2').value < 20) {
+        document.getElementById('_ipbx2').value++;
+        var test = document.getElementById('_ipbx4');
+        test.value = parseInt(test.value)+5;
+      }
+      break;
+    case 2 :  // 뺄셈
+      if(document.getElementById('_ipbx2').value > 0) {
+        document.getElementById('_ipbx2').value--;
+        var test = document.getElementById('_ipbx4');
+        test.value = parseInt(test.value)-5;
+      }
+      break;
+    default : break;
+    }
+    return false;
+    }
+
+    // input의 value값을 더하거나 빼는 함수
+    function cal3(n_id, n_math) { // 첫번째 인자 ID, 두번쨰 인자 덧셈or뺄셈
+      switch(n_math) {
+      case 1 : // 덧셈
+      if(document.getElementById('_ipbx3').value < 20) {
+        document.getElementById('_ipbx3').value++;
+        var test = document.getElementById('_ipbx4');
+        test.value = parseInt(test.value)+10;
+      }
+      break;
+    case 2 :  // 뺄셈
+      if(document.getElementById('_ipbx3').value > 0) {
+        document.getElementById('_ipbx3').value--;
+        var test = document.getElementById('_ipbx4');
+        test.value = parseInt(test.value)-10;
+      }
+      break;
+    default : break;
+    }
+    return false;
+    }
+    
+  });
+
+  </script>
+
+</head>
+
+
+<body id="page-top">
+  
+  <header class="masthead">
+          
+    
+    <div class="container h-100">
+              
+                  
+      <div class="row h-100">
+            <script>
+
+            </script>
+                    
+            <div class="col-lg-3 my-auto">
+                
+                
+                    <img src="/img/2.png" class="img-fluid" alt="" style="margin:25px;">
+                  <h1 class="mb-5" >
+                      <br>
+                        <form>
+                            <input type=button id="minus1">
+				                    <input type=text id="_ipbx1" value=0 style="color:lightgray;font-size:70px;width:100px; height:50px;background-color:transparent;border:0 solid black;text-align:center;">
+                            <input type=button id="plus1">
+
+                            <!-- <img src="../public/img/bg-cta.jpg" class="img-fluid" alt="" onclick="javascript:this.form.amount.value++;"> -->
+                        </form>
+                  </h1>
+                  
+            </div>
+              <div class="col-lg-3 my-auto">
+                    <img src="/img/five.png" class="img-fluid" alt="" style="margin:25px;">
+                    <h1 class="mb-5" >
+                        <br>
+                        <form>
+                            <input type=button id="minus2">
+				                    <input type=text id="_ipbx2" value=0 style="color:lightgray;font-size:70px;width:100px; height:50px;background-color:transparent;border:0 solid black;text-align:center;">
+				                    <input type=button id="plus2">
+                        </form>
+                    </h1>
+              </div>
+
+              <div class="col-lg-3 my-auto">
+                    <img src="/img/ten.png" class="img-fluid" alt="" style="margin:25px;">
+                  <h1 class="mb-5" >
+                      <br>
+                        <form>
+                            <input type=button id="minus3">
+				                    <input type=text id="_ipbx3" value=0 style="color:lightgray;font-size:70px;width:100px; height:50px;background-color:transparent;border:0 solid black;text-align:center;">
+				                    <input type=button id="plus3">
+                        </form>
+                  </h1>
+            </div>
+
+            <div class="col-lg-3 my-auto">
+                
+              <h1 class="mb-2" >
+                  <br>
+                  <input type=text id="_ipbx4" name="_ipbx4" value=0 style="color:black;font-size:50px;width:100px; height:50px;background-color:transparent;border:0 solid black;text-align:left;">Coin
+              </h1>
+              
+            </div>
+
+            <div class="col-lg-10 my-auto" style="text-align:right;">
+                
+                <h1 class="mb-5" >
+                    <br>
+                    <input type=button id="insert" value="사용하기" onclick="location.href='wallet.html'">
+                    <input type=button id="insert" value="종료" onClick="button_event();">
+                </h1>
+                
+              </div>
+
+          </div>
+        
+        </header>
+       
+  
+  
+
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <!-- <script src="../public/js/new-age.min.js"></script> -->
+
+</body>
+
+</html>

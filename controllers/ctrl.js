@@ -448,6 +448,11 @@ module.exports.get_vd_machine = function(req, res){
     res.render('vd_machine', { title : 'Add review' });
 };
 
+//물품구입
+module.exports.get_buy_item = function(req, res){
+    res.render('buy_item', { title : 'Add review' });
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -593,3 +598,8 @@ module.exports.machine = async function(req, res, next) {
 	res.send("complete");
 
 }
+
+//물품구입
+module.exports.post_buy_item = function(req, res,next){
+    
+};
