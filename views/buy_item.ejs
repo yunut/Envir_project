@@ -197,6 +197,11 @@ if (confirm("정말 종료하시겠습니까?") == true){    //확인
     
   });
 
+  function buy_fuc() {
+    var num = document.getElementById("_ipbx4").value;
+    location.href = "/item?num=" + num;
+  }
+
   </script>
 
 </head>
@@ -268,7 +273,7 @@ if (confirm("정말 종료하시겠습니까?") == true){    //확인
                 
                 <h1 class="mb-5" >
                     <br>
-                    <input type=button id="insert" value="사용하기" onclick="location.href='wallet.html'">
+                    <input type=button id="insert" value="사용하기" onclick="buy_fuc()">
                     <input type=button id="insert" value="종료" onClick="button_event();">
                 </h1>
                 

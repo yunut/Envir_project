@@ -10,6 +10,7 @@ router.get('/create_account',ctrl.create_form);
 router.get('/machine',ctrl.get_machine);
 router.get('/vd_machine',ctrl.get_vd_machine);
 router.get('/buy_item',ctrl.get_buy_item);
+router.get('/item',ctrl.item);
 
 
 //POST 메소드 작성

@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <title>QR Scanner</title>
-  <script src="/jsQR.js"></script>
+  <script src="js/jsQR.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
   <style>
     body {
@@ -114,8 +114,7 @@
             type: 'post',
             url: '/process',
             data: {
-                'account': code.data,
-                'pwd': _pwd
+                'account': code.data
             },
 
             success : function(result) {
@@ -125,7 +124,7 @@
                 console.log("fail");
             }
 
-        });
+            });
         } else {
           outputMessage.hidden = false;
           outputData.parentElement.hidden = true;

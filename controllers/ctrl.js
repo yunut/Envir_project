@@ -417,6 +417,8 @@ module.exports.index = function(req, res){
 module.exports.user_info = async function(req, res){
 	var key = req.query.key;
 	let result = await web3.eth.getBalance(key);
+
+
 	result = web3.utils.fromWei(result,"ether");
 
     res.render('user_info', { 
@@ -451,6 +453,11 @@ module.exports.get_vd_machine = function(req, res){
 //물품구입
 module.exports.get_buy_item = function(req, res){
     res.render('buy_item', { title : 'Add review' });
+};
+
+//물품구입 qr
+module.exports.item = function(req, res){
+    res.render('item', { title : 'Add review' });
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -560,7 +567,7 @@ module.exports.login = function(req, res, next){
 
 	try{
 		new Promise((resolve, reject) => {
-			connection.query(query, function(err, rows, fields) {
+			connection.query(query, async function(err, rows, fields) {
 				
 				if(err){
 					console.log(err);
@@ -569,6 +576,7 @@ module.exports.login = function(req, res, next){
 
 				}else if (rows.length > 0) { 
 					if(pwd == rows[0].PASSWORD) {
+						var unlock_account = await web3.eth.personal.unlockAccount(trash,"xptmxm");
 						return resolve(rows[0].ACCOUNT);
 					}else{
 						return resolve("0");
@@ -593,13 +601,25 @@ module.exports.machine = async function(req, res, next) {
 	var account = req.body.account;
 	var num = req.query.num;
 	
-	var send_transction = await contract.methods.mint(account,num).send({from: trash});
+	//자판기 계정 unlock 필요
+	var unlock_account = await web3.eth.personal.unlockAccount(trash,"xptmxm")
+	.then(
+		send_transction = await contract.methods.mint(account,num).send({from: trash})
+	);
+	
+
+
 
 	res.send("complete");
 
 }
 
-//물품구입
-module.exports.post_buy_item = function(req, res,next){
-    
+//물품구입할때 qr코드 읽고 차감
+module.exports.post_buy_item = async function(req, res,next){
+	var num = req.query.num;
+	var account = req.body.account;
+
+	var send_transction = await contract.methods.transferpay(account,num).send({from: account});
+
+	res.send("complete");
 };
