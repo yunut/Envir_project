@@ -436,9 +436,16 @@ module.exports.create_form = function(req, res){
     res.render('user_create', { title : 'Add review' });
 };
 
-//자판기
+//자판기 스캐너
 module.exports.get_machine = function(req, res){
+
     res.render('machine', { title : 'Add review' });
+};
+
+
+//자판기
+module.exports.get_vd_machine = function(req, res){
+    res.render('vd_machine', { title : 'Add review' });
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -575,7 +582,7 @@ module.exports.login = function(req, res, next){
 	}
 };
 
-//자판기에서 qr코드 읽었을때 처리하는 로직
+//자판기에서 qr코드 읽고 완료버튼누를때 처리하는 로직
 module.exports.machine = async function(req, res, next) {
 	var trash = '0x5dcebb61d0a7b41c2e2fad508be91927d540feaa';
 	var account = req.body.account;

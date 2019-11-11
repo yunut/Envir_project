@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>New Age - Start Bootstrap Theme</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../public/vendor/simple-line-icons/css/simple-line-icons.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../public/img/mark2.jpg" />
+
+  <!-- Plugin CSS -->
+  <link rel="stylesheet" href="/device-mockups/device-mockups.min.css">
+
+  <!-- Custom styles for this template -->
+  <link href="/css/new-age.min.css" rel="stylesheet">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+ 
+ 
+</head>
+
+
+<body id="page-top">
+
+ 
+  <header class="masthead">
+           
+    
+    <div class="container h-100">
+              
+                  
+      <div class="row h-100">
+          
+       
+        <div class="col-lg-7 my-auto">
+            
+            <img src="/img/vending.gif" alt="" style="position:relative;">
+            <script type="text/javascript">
+              //<svg width="300" height="300" style="background: blue"> 추가
+               var svg = d3.select("body").append("svg") 
+                 .attr("height",460)
+                 .attr("weight",300)
+                 .style("left","240px")
+                 .style("top","480px")
+                 .style("background-color","transparent")
+                 .style("position","absolute");
+          
+                  
+                 
+                 function initEventListener(){
+                     // value = 0;
+                     // document.getElementById("insert").addEventListener("click",function(){render();javascript:this.form.amount.value++;},false);
+                     //document.getElementById("insert").addEventListener("click",function(){javascript:this.form.amount.value++;}, false);
+                     document.getElementById("plus").value++;
+                     document.getElementById("_ipbx").value++;
+                     //this.form.amount.value++;
+                     render();
+                 }
+               function render(){
+                 
+                  //<circle cx="30" cy="150"  r="15" fill="red> 추가
+                   var image = svg.append("circle") 
+                        
+                          //  .attr("href", "../public/img/can2.jpg")
+                           .attr("cx",250)
+                           .attr("cy",300)
+                           .attr("r",25)
+                           .style("position","fixed")
+                           .attr("fill", "blue");
+                     image.transition()   //시작전 1초 대기(delay)했다가 2초동안  현재위치에서 x축 300위치로 이동한뒤 원 제거
+                             .duration(1000)  
+                             // .delay(1000)
+                           .attr("cy",10).remove()
+          
+                  
+                 }
+                 // render(); //처음한번수행
+                 // d3.interval(render, 3000); //3초간격으로 render()함수 호출함 
+
+
+                 //qr코드에 처리한 갯수 파라메터로 전달
+                 function nextqr() {
+                     var num = document.getElementById("plus").value;
+                     console.log("테스트"+ num);
+                     location.href = "/machine?num=" + num;
+                 }
+             
+             
+              </script>
+            
+            
+            <div class="header-content mx-auto">
+                    
+            </div>
+            </div>
+              <div class="col-lg-5 my-auto">
+                <div class="device-container">
+                  <!-- <div class="device-mockup iphone6_plus portrait white"> -->
+                    <div class="device">
+                      <div class="screen">
+                      </div>
+                      <div class="button">
+                        <!-- You can hook the "home button" to some JavaScript events or just remove it -->
+                        
+                      </div>
+                      
+                    </div>
+                    
+                  </div>
+                  <form>
+                      <input type=button id="insert" value="투입" onClick="initEventListener();"><br>
+                      <!-- <button id="insert" onclick="initEventListener();">투입</button> -->
+                      <h1>캔 <input type=text id="plus" name="amount" value=0 style="color:black;font-size:50px;width:100px; height:50px;background-color:transparent;border:0 solid black;text-align:right;">  개
+                      </h1>
+                      <br><br><br><br>
+                      <!-- <button id="insert" onclick="initEventListener();">투입</button> -->
+                      <input type=text id="_ipbx" value=0 style="color:lightgray;font-size:70px;width:100px; height:60px;background-color:transparent;border:0 solid black;text-align:center;">원
+                      <br><br><br><br>
+                      <input type=button id="receive" value="토큰받기" onclick="nextqr()">
+                  </form>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        
+        </header>
+       
+  
+  
+
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <!-- <script src="../public/js/new-age.min.js"></script> -->
+
+</body>
+
+</html>
+

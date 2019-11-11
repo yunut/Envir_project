@@ -8,6 +8,7 @@ router.get('/user_info', ctrl.user_info);
 router.get('/use_coin', ctrl.use_coin);
 router.get('/create_account',ctrl.create_form);
 router.get('/machine',ctrl.get_machine);
+router.get('/vd_machine',ctrl.get_vd_machine);
 
 
 //POST 메소드 작성
