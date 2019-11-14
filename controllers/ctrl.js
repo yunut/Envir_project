@@ -1,6 +1,6 @@
 console.log("ccontrollers start..");
 var mysql = require("mysql");
-var mysqlConfig = mysql.createConnection({
+var connection = mysql.createConnection({
     host : 'us-cdbr-iron-east-05.cleardb.net',
     port : '3306',
     user : 'bf475c2956231b',
@@ -8,15 +8,8 @@ var mysqlConfig = mysql.createConnection({
     database : 'heroku_03866a54d3fc614'
 });
 
-var pool= mysql.createPool(mysqlConfig);
- 
-    pool.getConnection(function(err,connection){
-        connection.query("쿼리",function(err,rows){
-       
-        connection.release();
-        //이제 이 커넥션은 pool로 돌아가 다른 주체가 사용 할 수 있도록 준비합니다.
-        });
-    });
+connection.connect();
+
 var Tx = require("ethereumjs-tx").Transaction;
 
 var Web3 = require("web3");
