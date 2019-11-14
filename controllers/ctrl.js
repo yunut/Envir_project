@@ -8,7 +8,13 @@ var connection = mysql.createConnection({
     database : 'heroku_03866a54d3fc614'
 });
 
-connection.on('error', function() {});
+var pool = mysql.createPool(connection);
+pool.getConnection(function(err,connection) {
+	if(!err) {
+
+	}
+	connection.release();
+})
 var Tx = require("ethereumjs-tx").Transaction;
 
 var Web3 = require("web3");
