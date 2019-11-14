@@ -1,6 +1,6 @@
 console.log("ccontrollers start..");
 var mysql = require("mysql");
-var connection = mysql.createConnection({
+var dbconfig = mysql.createConnection({
     host : 'us-cdbr-iron-east-05.cleardb.net',
     port : '3306',
     user : 'bf475c2956231b',
@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
     database : 'heroku_03866a54d3fc614'
 });
 
-var pool = mysql.createPool(connection);
+var pool = mysql.createPool(dbconfig);
 pool.getConnection(function(err,connection) {
 	if(!err) {
 
