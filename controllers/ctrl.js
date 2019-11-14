@@ -1,50 +1,49 @@
 console.log("ccontrollers start..");
 var mysql = require("mysql");
 var connection = mysql.createConnection({
-    host : 'localhost',
+    host : 'us-cdbr-iron-east-05.cleardb.net',
     port : '3306',
-    user : 'root',
-    password : '1111',
-    database : 'mydb'
+    user : 'bf475c2956231b',
+    password : 'bd3edbc5',
+    database : 'heroku_03866a54d3fc614'
 });
 
-connection.connect();
+connection.on('error', function() {});
+var Tx = require("ethereumjs-tx").Transaction;
 
 var Web3 = require("web3");
 var web3 = new Web3();
-web3.setProvider(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
-var proofContract = "0xdd75bbec385b4e5507214c83e7b7e3a427baeca5";
+web3.setProvider(new Web3.providers.HttpProvider("https://kovan.infura.io/v3/0f4756f47089425c8be0922bc4fe9040"));
+
+// web3.setProvider(new Web3.providers.HttpProvider("https://kovan-testnet.github.io/website/"));
+var proofContract = "0x8a83083215fc1b91d86e4b42c396ba4135f0b0c9";
 var proofAbi = [
 	{
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_transfer",
+				"name": "add_user",
 				"type": "address"
-			},
-			{
-				"name": "amount",
-				"type": "uint256"
 			}
 		],
-		"name": "transferpay",
+		"name": "add_admin",
 		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "name",
-		"outputs": [
+		"constant": false,
+		"inputs": [
 			{
-				"name": "",
-				"type": "string"
+				"name": "_add_trash",
+				"type": "address"
 			}
 		],
+		"name": "add_trash",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -74,47 +73,15 @@ var proofAbi = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "add_user",
-				"type": "address"
-			}
-		],
-		"name": "add_admin",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "sender",
+				"name": "spender",
 				"type": "address"
 			},
 			{
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"name": "amount",
+				"name": "subtractedValue",
 				"type": "uint256"
 			}
 		],
-		"name": "transferFrom",
+		"name": "decreaseAllowance",
 		"outputs": [
 			{
 				"name": "",
@@ -123,20 +90,6 @@ var proofAbi = [
 		],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "decimals",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -181,109 +134,6 @@ var proofAbi = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "admin",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "account",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "payback",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_add_trash",
-				"type": "address"
-			}
-		],
-		"name": "add_trash",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "symbol",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"name": "subtractedValue",
-				"type": "uint256"
-			}
-		],
-		"name": "decreaseAllowance",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -307,37 +157,22 @@ var proofAbi = [
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"name": "owner",
+				"name": "sender",
 				"type": "address"
 			},
 			{
-				"name": "spender",
+				"name": "recipient",
 				"type": "address"
-			}
-		],
-		"name": "allowance",
-		"outputs": [
+			},
 			{
-				"name": "",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "trash",
+		"name": "transferFrom",
 		"outputs": [
 			{
 				"name": "",
@@ -345,7 +180,25 @@ var proofAbi = [
 			}
 		],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_transfer",
+				"type": "address"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferpay",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -397,11 +250,161 @@ var proofAbi = [
 		],
 		"name": "Approval",
 		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "admin",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"name": "spender",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "payback",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "trash",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	}
 ]
 var contract = new web3.eth.Contract(proofAbi,proofContract);
-console.log("confing_start");
-console.log(web3.version);
+// console.log("confing_start");
+// console.log(web3.version);
 
 
 
@@ -415,11 +418,21 @@ module.exports.index = function(req, res){
 
 //사용자 정보 컨트롤러
 module.exports.user_info = async function(req, res){
-	var key = req.query.key;
-	let result = await web3.eth.getBalance(key);
+	var key = req.query.key; //내 계좌 주소
+	
+	// let contract = await new web3.eth.Contract(proofAbi,proofContract);
+	let result = await contract.methods.balanceOf(key).call();
 
-
-	result = web3.utils.fromWei(result,"ether");
+	console.log("결과테스트: " , result);
+	// var tokenInst = new web3.eth.Contract(proofAbi,proofContract);
+	// await tokenInst.methods.balanceOf(key).call().then(function (bal) {
+    //     console.log(bal);
+	//  });
+	
+	//==========================이더는 잘 보인다================
+	// let result = await web3.eth.getBalance(key); 
+	// result = web3.utils.fromWei(result,"ether");
+	//==========================================================
 
     res.render('user_info', { 
 		key : key,
@@ -440,8 +453,9 @@ module.exports.create_form = function(req, res){
 
 //자판기 스캐너
 module.exports.get_machine = function(req, res){
-
-    res.render('machine', { title : 'Add review' });
+	var numvalue = req.query.num;
+    res.render('machine', { 
+		num : numvalue });
 };
 
 
@@ -456,9 +470,21 @@ module.exports.get_buy_item = function(req, res){
 };
 
 //물품구입 qr
-module.exports.item = function(req, res){
-    res.render('item', { title : 'Add review' });
+module.exports.item = async function(req, res){
+	var numvalue = req.query.num + ";";
+	//사용처 주소
+	var key = "0xc0d486753068c654041A2B6fB6A5da671eB02B90"
+	let result = await contract.methods.balanceOf(key).call();
+    res.render('item', { 
+		num : numvalue + key,
+		balance : result 	
+	});
 };
+
+module.exports.user_scan = function(req, res) {
+	res.render('user_scan', { 
+	});
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -526,18 +552,68 @@ module.exports.create = async function(req, res, next){
     var email = req.body.email;
     var pwd = req.body.pwd;
     var emailConfirm = req.body.emailConfirm;
-	console.log(emailConfirm);
+	// console.log(emailConfirm);
 
 
     if(emailConfirm == 1){ //중복확인 했을 경우만 계정생성
 
-        var newAccount = await web3.eth.personal.newAccount(pwd,function(err,result) {
-                console.log("계정생성 중");
+        // var newAccount = await web3.eth.personal.newAccount(pwd,function(err,result) {
+        //         console.log("계정생성 중");
                 
-        });
+        // });
+		// newAccount = newAccount.toLowerCase();
 
-        
-        let str_query =`INSERT INTO block_table(EMAIL, NAME, PASSWORD,ACCOUNT) VALUES('${email}','${name}','${pwd}','${newAccount}');`;
+		//================여기부터 수정해야함(2019-11-12)=====================
+
+		var newAccount  = web3.eth.accounts.create(pwd,function(err,result){
+			console.log("계정생성 중");
+		});
+
+		var person_Account = newAccount.address; 
+		person_Account.toLowerCase();
+		console.log("새로 생성된 계정: ", newAccount);
+		var pk = newAccount.privateKey;
+
+
+			
+
+		var count = await web3.eth.getTransactionCount("0x34f6D074736d86F1641161e60F8946c7a3150F50");  
+
+
+		// console.log("privateKey : " + privateKey);
+		// console.log("가스값: " ,web3.eth.getGasPrice());
+		var rawTransaction = {
+			"from":"0x34f6D074736d86F1641161e60F8946c7a3150F50", //자판기가 컨트랙트에 트랜잭션 요청 require(msg.sender)
+			"to":person_Account,
+			"gas":215720,
+			"gasPrice":web3.utils.toHex(2 * 1e9),
+			"value": 50000000000000000,
+			"chainId": 42, //토큰 발행
+			// "data":contract.methods.transfer(account, amount).encodeABI(),
+			"nonce":web3.utils.toHex(count)
+		}
+
+		var transaction = new Tx(rawTransaction, {chain:'kovan'});
+
+		var privateKey = new Buffer.from('49f97f5533623812480bf54ca8800b5a3c443958d88b7657e75cbfa9fc80d853','hex'); //kovan 쓰레기통 계정 private key
+
+		transaction.sign(privateKey);	
+		
+		// console.log("거래싸인: ", transaction);
+
+
+		var result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
+		console.log("결과값: " , result);
+		
+		
+
+		
+
+	
+
+		
+		//====================================================================
+        let str_query =`INSERT INTO block_table(EMAIL, NAME, PASSWORD,ACCOUNT,PK) VALUES('${email}','${name}','${pwd}','${person_Account}','${pk}');`;
         connection.query(str_query,function(err, result, fields) {
             if(err) {
                 console.log(err);
@@ -576,7 +652,6 @@ module.exports.login = function(req, res, next){
 
 				}else if (rows.length > 0) { 
 					if(pwd == rows[0].PASSWORD) {
-						var unlock_account = await web3.eth.personal.unlockAccount(trash,"xptmxm");
 						return resolve(rows[0].ACCOUNT);
 					}else{
 						return resolve("0");
@@ -597,29 +672,126 @@ module.exports.login = function(req, res, next){
 
 //자판기에서 qr코드 읽고 완료버튼누를때 처리하는 로직
 module.exports.machine = async function(req, res, next) {
-	var trash = '0x5dcebb61d0a7b41c2e2fad508be91927d540feaa';
-	var account = req.body.account;
-	var num = req.query.num;
 	
-	//자판기 계정 unlock 필요
-	var unlock_account = await web3.eth.personal.unlockAccount(trash,"xptmxm")
-	.then(
-		send_transction = await contract.methods.mint(account,num).send({from: trash})
-	);
+	//자판기 계좌 개인키
+	var trashAddress = '0x2cb9aEd5bCdC33Fa7ba55AF9e96633972a683705'; //kovan 쓰레기통 계정 주소
+	var account = req.body.account; //내 계좌
+	var num = req.body.num;//받을 코인 갯수
+
+	var amount = web3.utils.toHex(num) //hex 값으로 변환
+	// console.log("어마운트: ",amount);
 	
 
+	var count = await web3.eth.getTransactionCount(trashAddress);  
 
 
+	// console.log("privateKey : " + privateKey);
+	// console.log("가스값: " ,web3.eth.getGasPrice());
+	var rawTransaction = {
+		"from":trashAddress, //자판기가 컨트랙트에 트랜잭션 요청 require(msg.sender)
+		"to":contract._address,
+		"gas":215720,
+		"gasPrice":web3.utils.toHex(2 * 1e9),
+		"value":"0x0",
+		"chainId": 42,
+		"data":contract.methods.mint(account,num).encodeABI(), //토큰 발행
+		// "data":contract.methods.transfer(account, amount).encodeABI(),
+		"nonce":web3.utils.toHex(count)
+	}
+
+	var transaction = new Tx(rawTransaction, {chain:'kovan'});
+
+	var privateKey = new Buffer.from('FA783B8D551E47EDCADDB9A5C4C727A7F2D8C877645F4FA1C5453086B31CC745','hex'); //kovan 쓰레기통 계정 private key
+
+	transaction.sign(privateKey);	
+	
+	// console.log("거래싸인: ", transaction);
+
+
+	var result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
+	console.log("결과값: " , result);
+
+	contract.methods.balanceOf(account).call().then(function(bal){
+		console.log("잔액: ", bal);
+	});
+
+	//======================================================================
+	// # chainId
+    // 0: Olympic, Ethereum public pre-release testnet
+    // 1: Frontier, Homestead, Metropolis, the Ethereum public main network
+    // 1: Classic, the (un)forked public Ethereum Classic main network, chain ID 61
+    // 1: Expanse, an alternative Ethereum implementation, chain ID 2
+    // 2: Morden, the public Ethereum testnet, now Ethereum Classic testnet
+    // 3: Ropsten, the public cross-client Ethereum testnet
+    // 4: Rinkeby, the public Geth PoA testnet
+    // 42: Kovan, the public Parity PoA testnet
+    // 77: Sokol, the public POA Network testnet
+    // 99: Core, the public POA Network main network
+    // 7762959: Musicoin, the music blockchain
+	//======================================================================================
 	res.send("complete");
-
 }
+
+
+
 
 //물품구입할때 qr코드 읽고 차감
 module.exports.post_buy_item = async function(req, res,next){
-	var num = req.query.num;
 	var account = req.body.account;
+	var string_tmp = account.split(';');
+	var my_account = req.body.key;
+	console.log(string_tmp);
 
-	var send_transction = await contract.methods.transferpay(account,num).send({from: account});
 
-	res.send("complete");
-};
+	let query = `SELECT PK FROM block_table WHERE ACCOUNT='${my_account}';`;
+	
+			connection.query(query, async function(err, rows, fields) {
+				
+				if(err){
+					console.log(err);
+				
+				}else if (rows.length > 0) { 
+						//0번째 배열이 가격, 1번배열이 주소
+					var saleAddress = string_tmp[1]; //kovan 쓰레기통 계정 주소
+					var num = string_tmp[0];//받을 코인 갯수
+				
+					
+					var count = await web3.eth.getTransactionCount(my_account);  
+					console.log(rows[0].PK);
+
+					// console.log("privateKey : " + privateKey);
+					// console.log("가스값: " ,web3.eth.getGasPrice());
+					var rawTransaction = {
+						"from":my_account, //자판기가 컨트랙트에 트랜잭션 요청 require(msg.sender)
+						"to":contract._address,
+						"gas":215720,
+						"gasPrice":web3.utils.toHex(2 * 1e9),
+						"value":"0x0",
+						"chainId": 42,
+						"data":contract.methods.transferpay(saleAddress,num).encodeABI(), //토큰 발행
+						// "data":contract.methods.transfer(account, amount).encodeABI(),
+						"nonce":web3.utils.toHex(count)
+					}
+
+					var transaction = new Tx(rawTransaction, {chain:'kovan'});
+					var pktmp = rows[0].PK
+					var privateKey = new Buffer.from(pktmp.substring(2,pktmp.length),'hex');
+					transaction.sign(privateKey);	
+					
+					// console.log("거래싸인: ", transaction);
+
+
+					var result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
+					console.log("결과값: " , result);
+
+					contract.methods.balanceOf(my_account).call().then(function(bal){
+					console.log("잔액: ", bal);
+
+					res.send("lol");
+					});
+				} else {
+					console.log("에러가났다" + rows.length);
+				}
+		
+			});
+	};

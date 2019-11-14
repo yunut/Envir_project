@@ -50,6 +50,46 @@
     #noQRFound {
       text-align: center;
     }
+    .wrap-loading{ /*화면 전체를 어둡게 합니다.*/
+
+      position: fixed;
+
+      left:0;
+
+      right:0;
+
+      top:0;
+
+      bottom:0;
+
+      background: rgba(0,0,0,0.2); /*not in ie */
+
+      filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000', endColorstr='#20000000');    /* ie */
+
+
+
+      }
+
+      .wrap-loading div{ /*로딩 이미지*/
+
+          position: fixed;
+
+          top:50%;
+
+          left:50%;
+
+          margin-left: -21px;
+
+          margin-top: -21px;
+
+      }
+
+      .display-none{ /*감추기*/
+
+          display:none;
+
+      }
+    
   </style>
 </head>
 <body>
@@ -62,6 +102,13 @@
     <div id="outputMessage">No QR code detected.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
   </div>
+  <div class="wrap-loading display-none">
+
+    <div><img src="/images/loading.gif" /></div>
+
+</div>  
+
+
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
@@ -110,28 +157,50 @@
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
+          // console.log(code.data);
+          // console.log("1");
+
+          var para = document.location.href.split("=");
+          console.log(para[1]);
+
           $.ajax({
             type: 'post',
             url: '/process',
             data: {
-                'account': code.data
+                'account': code.data,
+                'num' : para[1]
             },
 
             success : function(result) {
-                console.log("success");
+                alert("처리되었습니다.");
+                location.href = "/vd_machine";
             },
             error : function() {
                 console.log("fail");
+                
+            },
+            beforeSend:function() {
+              $('.wrap-loading').removeClass('display-none');
+              video.pause();
+              return;
+            }
+            ,complete: function() {
+              $('.wrap-loading').addClass('display-none');
             }
 
             });
+
+          // console.log("2");
+          
         } else {
           outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
+          
         }
       }
       requestAnimationFrame(tick);
     }
   </script>
+  <script src="/vendor/jquery/jquery.min.js"></script>
 </body>
 </html>

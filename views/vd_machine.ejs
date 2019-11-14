@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
-  <link rel="icon" type="image/png" href="/img/mark2.jpg" />
+  <link rel="icon" type="image/png" href="/img/logo2.png" />
 
   <!-- Plugin CSS -->
   <link rel="stylesheet" href="/device-mockups/device-mockups.min.css">
@@ -65,7 +65,8 @@
                      // document.getElementById("insert").addEventListener("click",function(){render();javascript:this.form.amount.value++;},false);
                      //document.getElementById("insert").addEventListener("click",function(){javascript:this.form.amount.value++;}, false);
                      document.getElementById("plus").value++;
-                     document.getElementById("_ipbx").value++;
+                     var test = document.getElementById('_ipbx');
+                     test.value = parseInt(test.value)+25;
                      //this.form.amount.value++;
                      render();
                  }
@@ -126,7 +127,7 @@
                       </h1>
                       <br><br><br><br>
                       <!-- <button id="insert" onclick="initEventListener();">투입</button> -->
-                      <input type=text id="_ipbx" value=0 style="color:lightgray;font-size:70px;width:100px; height:60px;background-color:transparent;border:0 solid black;text-align:center;">원
+                      <input type=text id="_ipbx" value=0 style="color:lightgray;font-size:70px;width:200px; height:60px;background-color:transparent;border:0 solid black;text-align:center;">RTC
                       <br><br><br><br>
                       <input type=button id="receive" value="토큰받기" onclick="nextqr()">
                   </form>

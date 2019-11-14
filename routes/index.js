@@ -11,6 +11,9 @@ router.get('/machine',ctrl.get_machine);
 router.get('/vd_machine',ctrl.get_vd_machine);
 router.get('/buy_item',ctrl.get_buy_item);
 router.get('/item',ctrl.item);
+router.get('/user_scan',ctrl.user_scan);
+// router.get('/test',ctrl.test);
+
 
 
 //POST 메소드 작성
