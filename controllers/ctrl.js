@@ -1,11 +1,12 @@
 console.log("ccontrollers start..");
 var mysql = require("mysql");
-var connection = mysql.createConnection({
+var pool = mysql.createPool({
     host : 'us-cdbr-iron-east-05.cleardb.net',
     port : '3306',
     user : 'bf475c2956231b',
     password : 'bd3edbc5',
-    database : 'heroku_03866a54d3fc614'
+	database : 'heroku_03866a54d3fc614',
+	connectionLimit : 10
 });
 
 
@@ -496,53 +497,58 @@ module.exports.emailCheck = function(req,res,next){
     var email = req.body.email;
 
     let query = `select EMAIL from block_table where EMAIL = '${email}';`;
+	
+	pool.getConnection(function(err, connection) {
+		try{
+			new Promise((resolve, reject) => {
+				connection.query(query, function(err, result, fields) {
+					
+					let check="0";
+	
+					if(err){
+						console.log(err);
+					    connection.release();
+						// return reject(err);
+	
+					}else{ //없는 경우는 [] 값으로 들어감
+						if(result.length==0) {
+							connection.release();
+							return resolve("0");
+							
+						}else{
+	
+							console.log(result[0].EMAIL); //이메일 자체 string값 나옴
+							var emailCnt = result[0].EMAIL.length;
+				
+							// console.log("이메일 길이: " + emailCnt);
+				
+							if(emailCnt != 0){ //이메일 길이가 0이 아니면
+								check="1";
+								connection.release();
+								return resolve(check); //이메일 중복
+				
+							}else{
+								connection.release();
+								return resolve(check); //이메일 중복이 아닐 경우
+								
+							}
+						
+						}
+					}
+			
+				});
+			}).then(function(result){
+				res.json({ //보낼때 status 사용해야되기 때문에 json 형태로 전송
+					status: 200,
+					response: result
+				});                
+			});
+	
+		}catch(err){
+			console.log(err);
+		}
+	})
     
-    try{
-
-        new Promise((resolve, reject) => {
-            connection.query(query, function(err, result, fields) {
-                
-                let check="0";
-
-                if(err){
-                    console.log(err);
-                   
-                    // return reject(err);
-
-                }else{ //없는 경우는 [] 값으로 들어감
-                    if(result.length==0) {
-                        return resolve("0");
-                    }else{
-
-                        console.log(result[0].EMAIL); //이메일 자체 string값 나옴
-                        var emailCnt = result[0].EMAIL.length;
-            
-                        // console.log("이메일 길이: " + emailCnt);
-            
-                        if(emailCnt != 0){ //이메일 길이가 0이 아니면
-                            check="1";
-                            return resolve(check); //이메일 중복
-            
-                        }else{
-                            
-                            return resolve(check); //이메일 중복이 아닐 경우
-                            
-                        }
-                    
-                    }
-                }
-        
-            });
-        }).then(function(result){
-            res.json({ //보낼때 status 사용해야되기 때문에 json 형태로 전송
-                status: 200,
-                response: result
-            });                
-        });
-
-    }catch(err){
-        console.log(err);
-    }
 }
 
 //회원가입 컨트롤러
@@ -611,7 +617,7 @@ module.exports.create = async function(req, res, next){
 
 	
 
-		connection.getConnection(function(req,res) {
+		pool.getConnection(function(req,res) {
 			if(err) {
 				connection.release();
 				console.log('err connection');
@@ -620,8 +626,10 @@ module.exports.create = async function(req, res, next){
 			let str_query =`INSERT INTO block_table(EMAIL, NAME, PASSWORD,ACCOUNT,PK) VALUES('${email}','${name}','${pwd}','${person_Account}','${pk}');`;
         	connection.query(str_query,function(err, result, fields) {
             if(err) {
+				connection.release();
                 console.log(err);
             } else {
+				connection.release();
                 console.log(result);
             }
             
@@ -646,7 +654,7 @@ module.exports.login = function(req, res, next){
 	var pwd = req.body.pwd;
 	let query = `SELECT EMAIL,PASSWORD,ACCOUNT FROM block_table WHERE EMAIL='${email}';`;
 
-	connection.getConnection(function(req,res) {
+	pool.getConnection(function(req,res) {
 		if(err) {
 			connection.release();
 			console.log('err connection');
@@ -657,14 +665,17 @@ module.exports.login = function(req, res, next){
 				connection.query(query, async function(err2, rows, fields) {
 					
 					if(err2){
+						connection.release();
 						console.log(err2);
 					
 			
 	
 					}else if (rows.length > 0) { 
 						if(pwd == rows[0].PASSWORD) {
+							connection.release();
 							return resolve(rows[0].ACCOUNT);
 						}else{
+							connection.release();
 							return resolve("0");
 						}
 					}
@@ -759,7 +770,7 @@ module.exports.post_buy_item = async function(req, res,next){
 	console.log(string_tmp);
 	let query = `SELECT PK FROM block_table WHERE ACCOUNT='${my_account}';`;
 
-	connection.getConnection(function(req,res) {
+	pool.getConnection(function(req,res) {
 		if(err) {
 			connection.release();
 			console.log('err connection');
@@ -768,6 +779,7 @@ module.exports.post_buy_item = async function(req, res,next){
 		connection.query(query, async function(err, rows, fields) {
 				
 			if(err){
+				connection.release();
 				console.log(err);
 			
 			}else if (rows.length > 0) { 
@@ -806,10 +818,11 @@ module.exports.post_buy_item = async function(req, res,next){
 
 				contract.methods.balanceOf(my_account).call().then(function(bal){
 				console.log("잔액: ", bal);
-
+				connection.release();
 				res.send("lol");
 				});
 			} else {
+				connection.release();
 				console.log("에러가났다" + rows.length);
 			}
 	
