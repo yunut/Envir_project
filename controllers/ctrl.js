@@ -764,13 +764,6 @@ module.exports.post_buy_item = async function(req, res,next){
 	var my_account = req.body.key;
 	console.log(string_tmp);
 	let query = `SELECT PK FROM block_table WHERE ACCOUNT='${my_account}';`;
-	contract.methods.balanceOf(my_account).call().then(function(bal){
-		var num = string_tmp[0];
-		if(bal < num) {
-			res.send("loss");
-			return;
-		}
-	});
 	pool.getConnection(function(err,connection) {
 		if(err) {
 			connection.release();
@@ -783,7 +776,14 @@ module.exports.post_buy_item = async function(req, res,next){
 				connection.release();
 				console.log(err2);
 			
-			}else if (rows.length > 0) { 
+			}else if (rows.length > 0) {
+				var bal = contract.methods.balanceOf(my_account).call()
+				if(bal < num) {
+					res.send("loss");
+					return;
+				} else {
+						
+			
 					//0번째 배열이 가격, 1번배열이 주소
 				var saleAddress = string_tmp[1]; //kovan 쓰레기통 계정 주소
 				var num = string_tmp[0];//받을 코인 갯수
@@ -820,8 +820,10 @@ module.exports.post_buy_item = async function(req, res,next){
 				contract.methods.balanceOf(my_account).call().then(function(bal){
 				console.log("잔액: ", bal);
 				connection.release();
-				res.send("lol");
+				res.send("success");
 				});
+				}
+				
 			} else {
 				connection.release();
 				console.log("에러가났다" + rows.length);

@@ -115,14 +115,14 @@
 
     var qrcode = new QRCode(document.getElementById("qrcode"),{
         text: "<%= key %>",
-        width: 250,
-        height: 250,
+        width: 200,
+        height: 200,
         colorDark : "#000000",
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.H
     });
 
-    $('#qrcode > img').css({"margin-left":"30%"});
+    $('#qrcode > img').css({"margin-left":auto});
 </script> 
 
   <script src="/vendor/jquery/jquery.min.js"></script>
