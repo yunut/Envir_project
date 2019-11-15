@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
     database : 'heroku_03866a54d3fc614'
 });
 
-connection.connect();
+connection.on('error', function() {});
 
 var Tx = require("ethereumjs-tx").Transaction;
 
