@@ -72,15 +72,15 @@
 
       .wrap-loading div{ /*로딩 이미지*/
 
-          position: fixed;
+        position: fixed;
 
-          top:50%;
+        top:50%;
 
-          left:50%;
+        left:45%;
 
-          margin-left: -21px;
+        margin-left: -21px;
 
-          margin-top: -21px;
+        margin-top: -21px;
 
       }
 
@@ -136,6 +136,7 @@
     });
 
     function tick() {
+      let code = null;
       loadingMessage.innerText = "⌛ Loading video..."
       if (video.readyState === video.HAVE_ENOUGH_DATA) {
         loadingMessage.hidden = true;
@@ -146,7 +147,7 @@
         canvasElement.width = video.videoWidth;
         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
         var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        var code = jsQR(imageData.data, imageData.width, imageData.height, {
+        code = jsQR(imageData.data, imageData.width, imageData.height, {
           inversionAttempts: "dontInvert",
         });
         if (code) {
@@ -157,49 +158,52 @@
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
-          // console.log(code.data);
+          console.log(code.data);
           // console.log("1");
 
           var para = document.location.href.split("=");
-          console.log(para[1]);
+          //console.log(para[1]);
 
-          $.ajax({
-            type: 'post',
-            url: '/process',
-            data: {
-                'account': code.data,
-                'num' : para[1]
-            },
 
-            success : function(result) {
-                alert("처리되었습니다.");
-                location.href = "/vd_machine";
-            },
-            error : function() {
-                console.log("fail");
-                
-            },
-            beforeSend:function() {
-              $('.wrap-loading').removeClass('display-none');
-              video.pause();
-              return;
-            }
-            ,complete: function() {
-              $('.wrap-loading').addClass('display-none');
-            }
+            $.ajax({
+              type: 'post',
+              url: '/process',
+              data: {
+                  'account': code.data,
+                  'num' : para[1]
+              },
 
-            });
+              success : function(result) {
+                  alert("처리되었습니다.");
+                  location.href = "/vd_machine";
+              },
+              error : function() {
+                  console.log("fail");
+                  
+              },
+              beforeSend:function() {
+                video.pause();
+                $('.wrap-loading').removeClass('display-none');
+              }
+              ,complete: function() {
+                $('.wrap-loading').addClass('display-none');
+              }
 
+              });
           // console.log("2");
-          
+         
         } else {
           outputMessage.hidden = false;
           outputData.parentElement.hidden = true;
           
         }
       }
-      requestAnimationFrame(tick);
+      if(code==null){
+        requestAnimationFrame(tick);
+      }
     }
+
+  
   </script>
   <script src="/vendor/jquery/jquery.min.js"></script>
 </body>

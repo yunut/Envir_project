@@ -764,7 +764,13 @@ module.exports.post_buy_item = async function(req, res,next){
 	var my_account = req.body.key;
 	console.log(string_tmp);
 	let query = `SELECT PK FROM block_table WHERE ACCOUNT='${my_account}';`;
-
+	contract.methods.balanceOf(my_account).call().then(function(bal){
+		var num = string_tmp[0];
+		if(bal < num) {
+			res.send("loss");
+			return;
+		}
+	});
 	pool.getConnection(function(err,connection) {
 		if(err) {
 			connection.release();
