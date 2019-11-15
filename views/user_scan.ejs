@@ -134,7 +134,6 @@
             });
         
             function tick() {
-              let code = null;
               loadingMessage.innerText = "⌛ Loading video..."
               if (video.readyState === video.HAVE_ENOUGH_DATA) {
                 loadingMessage.hidden = true;
@@ -149,6 +148,7 @@
                   inversionAttempts: "dontInvert",
                 });
                 if (code) {
+                    
                   drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
                   drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
                   drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
@@ -169,37 +169,32 @@
                     success : function(result) {
                         if(result = "loss") {
                             alert("잔액이 부족합니다.");
-                            location.href = "/user_info?key=" + para[1];
                         } else {
                             alert("처리되었습니다.");
-                            location.href = "/user_info?key=" + para[1];
+                            location.href = "/user_info?key=" + para[1]
                         }
-
                     },
                     error : function() {
                         console.log("fail");
-
                     },
                     beforeSend:function() {
                         $('.wrap-loading').removeClass('display-none');
                         video.pause();
-
+                        return;
                     },
                     complete: function() {
                         $('.wrap-loading').addClass('display-none');
                     }
-                    
+                
 
                 });
-
+                return;
                 } else {
                   outputMessage.hidden = false;
                   outputData.parentElement.hidden = true;
                 }
               }
-              if(code==null) {
-                  requestAnimationFrame(tick);
-              }
+              requestAnimationFrame(tick);
             }
           </script>
           <script src="/vendor/jquery/jquery.min.js"></script>
