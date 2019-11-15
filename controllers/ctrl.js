@@ -653,7 +653,6 @@ module.exports.login = function(req, res, next){
     var email = req.body.email;
 	var pwd = req.body.pwd;
 	let query = `SELECT EMAIL,PASSWORD,ACCOUNT FROM block_table WHERE EMAIL='${email}';`;
-	console.log("테스트4");
 	pool.getConnection(function(err,connection) {
 		if(err) {
 			connection.release();
@@ -669,11 +668,9 @@ module.exports.login = function(req, res, next){
 						console.log(err2);
 					}else if (rows.length > 0) { 
 						if(pwd == rows[0].PASSWORD) {
-							console.log("테스트1");
 							connection.release();
 							return resolve(rows[0].ACCOUNT);
 						}else{
-							console.log("테스트2");
 							connection.release();
 							return resolve("0");
 						}
