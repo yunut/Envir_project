@@ -8,7 +8,6 @@ var connection = mysql.createConnection({
     database : 'heroku_03866a54d3fc614'
 });
 
-connection.on('error', function() {});
 
 var Tx = require("ethereumjs-tx").Transaction;
 
@@ -612,10 +611,14 @@ module.exports.create = async function(req, res, next){
 
 	
 
-		
-		//====================================================================
-        let str_query =`INSERT INTO block_table(EMAIL, NAME, PASSWORD,ACCOUNT,PK) VALUES('${email}','${name}','${pwd}','${person_Account}','${pk}');`;
-        connection.query(str_query,function(err, result, fields) {
+		connection.getConnection(function(req,res) {
+			if(err) {
+				connection.release();
+				console.log('err connection');
+				throw err;
+			}
+			let str_query =`INSERT INTO block_table(EMAIL, NAME, PASSWORD,ACCOUNT,PK) VALUES('${email}','${name}','${pwd}','${person_Account}','${pk}');`;
+        	connection.query(str_query,function(err, result, fields) {
             if(err) {
                 console.log(err);
             } else {
@@ -625,6 +628,9 @@ module.exports.create = async function(req, res, next){
         });
 
         res.send("confirm");
+		});
+		//====================================================================
+        
 
     }else{
 
@@ -637,38 +643,47 @@ module.exports.create = async function(req, res, next){
 //로그인 컨트롤러
 module.exports.login = function(req, res, next){
     var email = req.body.email;
-    var pwd = req.body.pwd;
-
-
+	var pwd = req.body.pwd;
 	let query = `SELECT EMAIL,PASSWORD,ACCOUNT FROM block_table WHERE EMAIL='${email}';`;
 
-	try{
-		new Promise((resolve, reject) => {
-			connection.query(query, async function(err, rows, fields) {
-				
-				if(err){
-					console.log(err);
-				
-		
-
-				}else if (rows.length > 0) { 
-					if(pwd == rows[0].PASSWORD) {
-						return resolve(rows[0].ACCOUNT);
-					}else{
-						return resolve("0");
+	connection.getConnection(function(req,res) {
+		if(err) {
+			connection.release();
+			console.log('err connection');
+			throw err;
+		}
+		try{
+			new Promise((resolve, reject) => {
+				connection.query(query, async function(err2, rows, fields) {
+					
+					if(err2){
+						console.log(err2);
+					
+			
+	
+					}else if (rows.length > 0) { 
+						if(pwd == rows[0].PASSWORD) {
+							return resolve(rows[0].ACCOUNT);
+						}else{
+							return resolve("0");
+						}
 					}
-				}
-		
+			
+				});
+			}).then(function(result){
+				res.json({ //보낼때 status 사용해야되기 때문에 json 형태로 전송
+					status: 200,
+					response: result
+				});                
 			});
-		}).then(function(result){
-			res.json({ //보낼때 status 사용해야되기 때문에 json 형태로 전송
-				status: 200,
-				response: result
-			});                
-		});
+	
+		}catch(err2){
+		}
 
-	}catch(err){
-	}
+	});
+	
+
+	
 };
 
 //자판기에서 qr코드 읽고 완료버튼누를때 처리하는 로직
@@ -742,57 +757,65 @@ module.exports.post_buy_item = async function(req, res,next){
 	var string_tmp = account.split(';');
 	var my_account = req.body.key;
 	console.log(string_tmp);
-
-
 	let query = `SELECT PK FROM block_table WHERE ACCOUNT='${my_account}';`;
-	
-			connection.query(query, async function(err, rows, fields) {
+
+	connection.getConnection(function(req,res) {
+		if(err) {
+			connection.release();
+			console.log('err connection');
+			throw err;
+		}
+		connection.query(query, async function(err, rows, fields) {
 				
-				if(err){
-					console.log(err);
+			if(err){
+				console.log(err);
+			
+			}else if (rows.length > 0) { 
+					//0번째 배열이 가격, 1번배열이 주소
+				var saleAddress = string_tmp[1]; //kovan 쓰레기통 계정 주소
+				var num = string_tmp[0];//받을 코인 갯수
+			
 				
-				}else if (rows.length > 0) { 
-						//0번째 배열이 가격, 1번배열이 주소
-					var saleAddress = string_tmp[1]; //kovan 쓰레기통 계정 주소
-					var num = string_tmp[0];//받을 코인 갯수
-				
-					
-					var count = await web3.eth.getTransactionCount(my_account);  
-					console.log(rows[0].PK);
+				var count = await web3.eth.getTransactionCount(my_account);  
+				console.log(rows[0].PK);
 
-					// console.log("privateKey : " + privateKey);
-					// console.log("가스값: " ,web3.eth.getGasPrice());
-					var rawTransaction = {
-						"from":my_account, //자판기가 컨트랙트에 트랜잭션 요청 require(msg.sender)
-						"to":contract._address,
-						"gas":215720,
-						"gasPrice":web3.utils.toHex(2 * 1e9),
-						"value":"0x0",
-						"chainId": 42,
-						"data":contract.methods.transferpay(saleAddress,num).encodeABI(), //토큰 발행
-						// "data":contract.methods.transfer(account, amount).encodeABI(),
-						"nonce":web3.utils.toHex(count)
-					}
-
-					var transaction = new Tx(rawTransaction, {chain:'kovan'});
-					var pktmp = rows[0].PK
-					var privateKey = new Buffer.from(pktmp.substring(2,pktmp.length),'hex');
-					transaction.sign(privateKey);	
-					
-					// console.log("거래싸인: ", transaction);
-
-
-					var result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
-					console.log("결과값: " , result);
-
-					contract.methods.balanceOf(my_account).call().then(function(bal){
-					console.log("잔액: ", bal);
-
-					res.send("lol");
-					});
-				} else {
-					console.log("에러가났다" + rows.length);
+				// console.log("privateKey : " + privateKey);
+				// console.log("가스값: " ,web3.eth.getGasPrice());
+				var rawTransaction = {
+					"from":my_account, //자판기가 컨트랙트에 트랜잭션 요청 require(msg.sender)
+					"to":contract._address,
+					"gas":215720,
+					"gasPrice":web3.utils.toHex(2 * 1e9),
+					"value":"0x0",
+					"chainId": 42,
+					"data":contract.methods.transferpay(saleAddress,num).encodeABI(), //토큰 발행
+					// "data":contract.methods.transfer(account, amount).encodeABI(),
+					"nonce":web3.utils.toHex(count)
 				}
-		
-			});
-	};
+
+				var transaction = new Tx(rawTransaction, {chain:'kovan'});
+				var pktmp = rows[0].PK
+				var privateKey = new Buffer.from(pktmp.substring(2,pktmp.length),'hex');
+				transaction.sign(privateKey);	
+				
+				// console.log("거래싸인: ", transaction);
+
+
+				var result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
+				console.log("결과값: " , result);
+
+				contract.methods.balanceOf(my_account).call().then(function(bal){
+				console.log("잔액: ", bal);
+
+				res.send("lol");
+				});
+			} else {
+				console.log("에러가났다" + rows.length);
+			}
+	
+		});
+	})
+
+	
+			
+};
