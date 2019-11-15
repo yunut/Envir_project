@@ -617,7 +617,7 @@ module.exports.create = async function(req, res, next){
 
 	
 
-		pool.getConnection(function(req,res) {
+		pool.getConnection(function(err,connection) {
 			if(err) {
 				connection.release();
 				console.log('err connection');
@@ -653,8 +653,8 @@ module.exports.login = function(req, res, next){
     var email = req.body.email;
 	var pwd = req.body.pwd;
 	let query = `SELECT EMAIL,PASSWORD,ACCOUNT FROM block_table WHERE EMAIL='${email}';`;
-
-	pool.getConnection(function(req,res) {
+	console.log("테스트4");
+	pool.getConnection(function(err,connection) {
 		if(err) {
 			connection.release();
 			console.log('err connection');
@@ -662,24 +662,22 @@ module.exports.login = function(req, res, next){
 		}
 		try{
 			new Promise((resolve, reject) => {
-				connection.query(query, async function(err2, rows, fields) {
+				connection.query(query, function(err2, rows, fields) {
 					
 					if(err2){
 						connection.release();
 						console.log(err2);
-					
-			
-	
 					}else if (rows.length > 0) { 
 						if(pwd == rows[0].PASSWORD) {
+							console.log("테스트1");
 							connection.release();
 							return resolve(rows[0].ACCOUNT);
 						}else{
+							console.log("테스트2");
 							connection.release();
 							return resolve("0");
 						}
 					}
-			
 				});
 			}).then(function(result){
 				res.json({ //보낼때 status 사용해야되기 때문에 json 형태로 전송
@@ -770,17 +768,17 @@ module.exports.post_buy_item = async function(req, res,next){
 	console.log(string_tmp);
 	let query = `SELECT PK FROM block_table WHERE ACCOUNT='${my_account}';`;
 
-	pool.getConnection(function(req,res) {
+	pool.getConnection(function(err,connection) {
 		if(err) {
 			connection.release();
 			console.log('err connection');
 			throw err;
 		}
-		connection.query(query, async function(err, rows, fields) {
+		connection.query(query, async function(err2, rows, fields) {
 				
-			if(err){
+			if(err2){
 				connection.release();
-				console.log(err);
+				console.log(err2);
 			
 			}else if (rows.length > 0) { 
 					//0번째 배열이 가격, 1번배열이 주소
